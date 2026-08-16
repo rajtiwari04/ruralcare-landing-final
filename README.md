@@ -144,28 +144,4 @@ WHATSAPP_PHONE_NUMBER_ID=...
 
 ---
 
-## 📊 Phase Summary
 
-| Phase | Features                                                        | Status |
-|-------|-----------------------------------------------------------------|--------|
-| 1     | Auth, AI Chat, Symptoms, Reports (OCR), Health History         | ✅ Done |
-| 2     | Telegram Bot, Medication Reminders, Appointments               | ✅ Done |
-| 3     | Telemedicine (WebRTC), AI Scribe, Prescriptions (PDF), Lab Tests | ✅ Done |
-| 4     | Disease Heatmap, Voice IVR, Govt Schemes, Leaderboard, Nutrition | ✅ Done |
-| 5     | Analytics Dashboard, AI Insights, Feedback System             | ✅ Done |
-| 6     | WhatsApp Bot, PWA Offline Mode, Offline Sync Engine           | ✅ Done |
-
----
-
-## 🏗 Seed Test Users
-
-```bash
-cd backend && node scripts/seed-users.js
-```
-
-| Role          | Phone        | Password    | URL               |
-|---------------|--------------|-------------|-------------------|
-| Patient       | 9000000004   | patient123  | /patient          |
-| Doctor        | 9000000001   | doctor123   | /doctor           |
-| Health Worker | 9000000003   | worker123   | /health-worker    |
-| Admin         | 9000000002   | admin123    | /admin            |
