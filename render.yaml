@@ -1,0 +1,77 @@
+services:
+  # Express Backend API
+  - type: web
+    name: ruralcare-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: OPENROUTER_BASE_URL
+        value: https://openrouter.ai/api/v1
+      - key: OPENROUTER_MODEL
+        value: deepseek/deepseek-chat
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_BOT_USERNAME
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: WHATSAPP_TOKEN
+        sync: false
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        sync: false
+      - key: WHATSAPP_VERIFY_TOKEN
+        value: ruralcare_verify_2024
+      - key: CLIENT_URL
+        value: https://your-app.vercel.app
+      - key: SERVER_URL
+        value: https://ruralcare-backend.onrender.com
+
+  # Telegram Bot
+  - type: worker
+    name: ruralcare-telegram-bot
+    env: node
+    rootDir: telegram-bot
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: BACKEND_API_URL
+        value: https://ruralcare-backend.onrender.com/api
+
+  # WhatsApp Bot (Phase 6)
+  - type: web
+    name: ruralcare-whatsapp-bot
+    env: node
+    rootDir: whatsapp-bot
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: WHATSAPP_TOKEN
+        sync: false
+      - key: WHATSAPP_PHONE_NUMBER_ID
+        sync: false
+      - key: WHATSAPP_VERIFY_TOKEN
+        value: ruralcare_verify_2024
+      - key: BACKEND_API_URL
+        value: https://ruralcare-backend.onrender.com/api
+      - key: PORT
+        value: 3001

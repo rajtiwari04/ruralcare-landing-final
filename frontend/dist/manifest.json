@@ -1,0 +1,20 @@
+{
+  "name": "RuralCare AI",
+  "short_name": "RuralCare",
+  "description": "Multilingual AI healthcare assistant for rural India",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0ea5e9",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "AI Chat",    "url": "/patient/chat",     "description": "Talk to AI health assistant" },
+    { "name": "Symptoms",   "url": "/patient/symptoms", "description": "Report your symptoms"        },
+    { "name": "Reports",    "url": "/patient/reports",  "description": "Upload medical reports"      }
+  ],
+  "categories": ["health", "medical", "lifestyle"]
+}

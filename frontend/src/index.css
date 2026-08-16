@@ -1,0 +1,243 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply antialiased;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply text-gray-900 bg-gray-50;
+    font-family: "Manrope", "Segoe UI", sans-serif;
+  }
+  * {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:ring-offset-2;
+  }
+}
+
+@layer components {
+  /* Card */
+  .card { @apply bg-white rounded-2xl border border-gray-100 p-4 shadow-sm; }
+
+  /* Buttons */
+  .btn-primary {
+    @apply bg-primary-500 hover:bg-primary-600 text-white font-semibold py-2.5 px-5 rounded-xl
+           transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed text-sm;
+  }
+  .btn-outline {
+    @apply border-2 border-gray-200 hover:border-gray-300 text-gray-700 font-semibold py-2.5 px-5 rounded-xl
+           transition-all duration-150 disabled:opacity-50 text-sm bg-white hover:bg-gray-50;
+  }
+  .btn-danger {
+    @apply bg-red-500 hover:bg-red-600 text-white font-semibold py-2.5 px-5 rounded-xl
+           transition-all duration-150 disabled:opacity-50 text-sm;
+  }
+
+  /* Form inputs */
+  .input {
+    @apply w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-900 bg-white
+           placeholder-gray-400 focus:border-teal-400 focus:ring-2 focus:ring-teal-100
+           transition-colors outline-none;
+  }
+  .label { @apply block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide; }
+
+  /* Risk badges */
+  .badge-low       { @apply bg-green-100 text-green-700 text-xs font-semibold px-2.5 py-1 rounded-full; }
+  .badge-medium    { @apply bg-yellow-100 text-yellow-700 text-xs font-semibold px-2.5 py-1 rounded-full; }
+  .badge-high      { @apply bg-red-100 text-red-700 text-xs font-semibold px-2.5 py-1 rounded-full; }
+  .badge-emergency { @apply bg-red-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full animate-pulse; }
+
+  /* Status */
+  .status-pending   { @apply bg-yellow-100 text-yellow-700; }
+  .status-confirmed { @apply bg-blue-100 text-blue-700; }
+  .status-completed { @apply bg-green-100 text-green-700; }
+  .status-cancelled { @apply bg-gray-100 text-gray-500; }
+  .status-failed    { @apply bg-red-100 text-red-700; }
+  .status-done      { @apply bg-green-100 text-green-700; }
+
+  /* ── Landing design system ── */
+  .rc-landing {
+    font-family: "Manrope", "Segoe UI", sans-serif;
+  }
+  .rc-container {
+    @apply max-w-6xl mx-auto px-5;
+  }
+  .rc-section {
+    @apply py-20 md:py-28;
+  }
+  .rc-label {
+    @apply text-[11px] font-bold uppercase;
+    letter-spacing: 0.22em;
+    color: #0D5C50;
+  }
+  .rc-brand-mark {
+    font-family: "Syne", sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.75rem, 3.5vw, 2.35rem);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: #14141F;
+  }
+  .rc-hero-title {
+    font-family: "Syne", sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.65rem, 3.8vw, 2.75rem);
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    color: #14141F;
+  }
+  .rc-display {
+    font-family: "Syne", sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.65rem, 3vw, 2.35rem);
+    letter-spacing: -0.02em;
+    line-height: 1.18;
+    color: #14141F;
+  }
+  .rc-btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white text-sm;
+    background: #0D5C50;
+    transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1), background 400ms ease, box-shadow 400ms ease;
+  }
+  .rc-btn-primary:hover {
+    background: #17806E;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 28px rgba(13, 92, 80, 0.22);
+  }
+  .rc-btn-ghost {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm border;
+    border-color: #E2DED6;
+    color: #14141F;
+    transition: border-color 400ms ease, color 400ms ease, background 400ms ease, transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .rc-btn-ghost:hover {
+    border-color: #0D5C50;
+    color: #0D5C50;
+    background: #E6F3F0;
+    transform: translateY(-1px);
+  }
+  .rc-signal-chip {
+    @apply text-xs font-semibold px-3 py-2 rounded-2xl border flex items-center gap-2;
+    background: rgba(251, 250, 247, 0.92);
+    border-color: #E2DED6;
+    color: #14141F;
+    backdrop-filter: blur(8px);
+  }
+  .rc-signal-dot {
+    @apply w-1.5 h-1.5 rounded-full;
+    background: #0D5C50;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 100px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* Loading spinner */
+@keyframes spin { to { transform: rotate(360deg); } }
+.animate-spin { animation: spin 1s linear infinite; }
+
+/* Landing page reveal animation */
+@keyframes rc-fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.rc-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.rc-reveal.rc-visible {
+  animation: rc-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Heartbeat line */
+@keyframes rc-heartbeat {
+  0%   { stroke-dashoffset: 400; }
+  100% { stroke-dashoffset: 0; }
+}
+.rc-heartbeat-line {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: rc-heartbeat 3s ease-in-out infinite;
+}
+
+/* Gentle float */
+@keyframes rc-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-4px); }
+}
+.rc-float {
+  animation: rc-float 4s ease-in-out infinite;
+}
+.rc-float-delay-1 { animation-delay: 0.8s; }
+.rc-float-delay-2 { animation-delay: 1.6s; }
+
+/* Soft pulse for health nodes */
+@keyframes rc-pulse-soft {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.7; transform: scale(1.06); }
+}
+.rc-pulse-soft {
+  animation: rc-pulse-soft 3s ease-in-out infinite;
+}
+.rc-pulse-soft-delay { animation-delay: 1.5s; }
+
+/* Voice waveform */
+@keyframes rc-wave {
+  from { transform: scaleY(0.45); }
+  to   { transform: scaleY(1); }
+}
+
+/* Path draw */
+@keyframes rc-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Heatmap cell appear */
+@keyframes rc-cell-in {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Connector pulse */
+@keyframes rc-connector-pulse {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 1; }
+}
+.rc-connector-pulse {
+  animation: rc-connector-pulse 2.5s ease-in-out infinite;
+}
+
+/* Accordion content */
+@keyframes rc-accordion-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.rc-accordion-open {
+  animation: rc-accordion-in 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .rc-reveal,
+  .rc-float,
+  .rc-float-delay-1,
+  .rc-float-delay-2,
+  .rc-pulse-soft,
+  .rc-pulse-soft-delay,
+  .rc-connector-pulse,
+  .rc-heartbeat-line,
+  .rc-accordion-open {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .rc-reveal { opacity: 1; transform: none; }
+}

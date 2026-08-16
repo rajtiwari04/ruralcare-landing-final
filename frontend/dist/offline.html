@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RuralCare AI — Offline</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background:#f0f9ff; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; text-align:center; }
+    .icon  { width:72px; height:72px; background:#0ea5e9; border-radius:20px; display:flex; align-items:center; justify-content:center; margin:0 auto 24px; }
+    .icon svg { width:40px; height:40px; fill:white; }
+    h1 { font-size:24px; color:#0f172a; font-weight:700; margin-bottom:8px; }
+    p  { color:#64748b; font-size:15px; line-height:1.6; max-width:300px; margin:0 auto; }
+    .emergency { margin-top:32px; background:#fef2f2; border:2px solid #fca5a5; border-radius:16px; padding:20px; max-width:320px; }
+    .emergency h2 { color:#dc2626; font-size:18px; margin-bottom:8px; }
+    .emergency a  { display:block; background:#dc2626; color:white; text-decoration:none; padding:14px; border-radius:12px; font-size:20px; font-weight:700; margin-top:12px; letter-spacing:1px; }
+    .retry { margin-top:24px; background:#0ea5e9; color:white; border:none; padding:14px 32px; border-radius:12px; font-size:16px; font-weight:600; cursor:pointer; }
+    .retry:hover { background:#0284c7; }
+    .status { margin-top:16px; font-size:13px; color:#94a3b8; }
+  </style>
+</head>
+<body>
+  <div class="icon">
+    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+  </div>
+  <h1>Internet nahi hai</h1>
+  <p>Aap abhi offline hain. Internet se judne ke baad apni health information dekh sakte hain.</p>
+  <p style="margin-top:8px; font-size:13px; color:#94a3b8;">You are currently offline. Your health data is saved and will sync when you reconnect.</p>
+
+  <div class="emergency">
+    <h2>🚨 Emergency?</h2>
+    <p style="color:#7f1d1d; font-size:14px;">Life-threatening emergency mein yahan call karein:</p>
+    <a href="tel:108">📞 108 — Free Ambulance</a>
+  </div>
+
+  <button class="retry" onclick="window.location.reload()">🔄 Retry Connection</button>
+  <p class="status" id="status">Checking connection...</p>
+
+  <script>
+    function check() {
+      if (navigator.onLine) {
+        document.getElementById("status").textContent = "Connected! Redirecting...";
+        setTimeout(() => window.location.href = "/", 1000);
+      } else {
+        document.getElementById("status").textContent = "Still offline. Try again later.";
+      }
+    }
+    window.addEventListener("online", () => { document.getElementById("status").textContent = "Back online! Redirecting..."; setTimeout(() => window.location.href="/", 1000); });
+    setInterval(check, 10000);
+    setTimeout(check, 2000);
+  </script>
+</body>
+</html>
