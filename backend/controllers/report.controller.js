@@ -15,7 +15,8 @@ const uploadReport = async (req, res) => {
     console.log("File:", origName, "| MIME:", mimeType, "| Type:", fileType, "| Size:", buffer.length);
     let cloudResult;
     try {
-      cloudResult = await uploadToCloudinary(buffer, { folder:"ruralcare/reports", resource_type:"auto" });
+      // Use "raw" resource_type for PDF files so Cloudinary serves the actual PDF document
+      cloudResult = await uploadToCloudinary(buffer, { folder:"ruralcare/reports", resource_type: isPDF ? "raw" : "image" });
     } catch(e) {
       return res.status(500).json({ success:false, message:"File upload failed: "+e.message });
     }
@@ -45,6 +46,15 @@ async function processAsync(reportId, buffer, fileType, mimeType, reportType, la
   }
 }
 
+const fixReportUrl = (r) => {
+  if (!r) return r;
+  const doc = r.toObject ? r.toObject() : r;
+  if (doc.fileType === "pdf" && doc.fileUrl && doc.fileUrl.includes("/image/upload/")) {
+    doc.fileUrl = doc.fileUrl.replace("/image/upload/", "/raw/upload/");
+  }
+  return doc;
+};
+
 const getMyReports = async (req, res) => {
   try {
     const { page=1, limit=10, reportType } = req.query;
@@ -52,7 +62,8 @@ const getMyReports = async (req, res) => {
     if (reportType) q.reportType = reportType;
     const reports = await MedicalReport.find(q).sort({createdAt:-1}).limit(limit*1).skip((page-1)*limit).select("-extractedText");
     const total   = await MedicalReport.countDocuments(q);
-    res.json({ success:true, data:{ reports, total } });
+    const fixedReports = reports.map(fixReportUrl);
+    res.json({ success:true, data:{ reports: fixedReports, total } });
   } catch(e) { res.status(500).json({ success:false, message:e.message }); }
 };
 
@@ -60,7 +71,16 @@ const getReport = async (req, res) => {
   try {
     const r = await MedicalReport.findOne({ _id:req.params.id, patient:req.user._id });
     if (!r) return res.status(404).json({ success:false, message:"Not found" });
-    res.json({ success:true, data:{ report:r } });
+    res.json({ success:true, data:{ report: fixReportUrl(r) } });
+  } catch(e) { res.status(500).json({ success:false, message:e.message }); }
+};
+
+const getReportFile = async (req, res) => {
+  try {
+    const r = await MedicalReport.findOne({ _id:req.params.id, patient:req.user._id });
+    if (!r) return res.status(404).json({ success:false, message:"Report not found or access denied" });
+    const fixed = fixReportUrl(r);
+    res.redirect(fixed.fileUrl);
   } catch(e) { res.status(500).json({ success:false, message:e.message }); }
 };
 
@@ -71,4 +91,4 @@ const deleteReport = async (req, res) => {
   } catch(e) { res.status(500).json({ success:false, message:e.message }); }
 };
 
-module.exports = { uploadReport, getMyReports, getReport, deleteReport };
+module.exports = { uploadReport, getMyReports, getReport, getReportFile, deleteReport };

@@ -40,8 +40,15 @@ const getMyInsights = async (req, res) => {
 
 const generateInsights = async (req, res) => {
   try {
-    const User    = require("../models/User.model");
-    const patient = await User.findById(req.params.patientId || req.user._id);
+    const User = require("../models/User.model");
+    let targetPatientId = req.user._id;
+    if (req.params.patientId) {
+      if (req.user.role !== "doctor" && req.user.role !== "admin" && req.user.role !== "healthWorker") {
+        return res.status(403).json({ success:false, message:"Access denied" });
+      }
+      targetPatientId = req.params.patientId;
+    }
+    const patient = await User.findById(targetPatientId);
     if (!patient) return res.status(404).json({ success:false, message:"Patient not found" });
     const insights = await insightsService.generatePatientInsights(patient);
     res.json({ success:true, data:{ insights, count:insights.length } });

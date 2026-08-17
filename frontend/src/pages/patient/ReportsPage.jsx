@@ -168,9 +168,8 @@ export default function ReportsPage() {
             const open = expanded === r._id;
             return (
               <Surface key={r._id} className="overflow-hidden">
-                <button
-                  type="button"
-                  className="w-full flex items-center gap-3 p-4 text-left"
+                <div
+                  className="w-full flex items-center gap-3 p-4 text-left cursor-pointer select-none"
                   onClick={() => setExpanded(open ? null : r._id)}
                 >
                   <div
@@ -192,13 +191,13 @@ export default function ReportsPage() {
                     type="button"
                     aria-label="Delete report"
                     onClick={(e) => { e.stopPropagation(); del(r._id); }}
-                    className="p-1.5 rounded-lg"
+                    className="p-1.5 rounded-lg hover:bg-black/5 transition-colors"
                     style={{ color: T.inkLight }}
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                   {open ? <ChevronUp className="w-4 h-4" style={{ color: T.inkLight }} /> : <ChevronDown className="w-4 h-4" style={{ color: T.inkLight }} />}
-                </button>
+                </div>
 
                 {open && (
                   <div className="px-4 pb-4 space-y-3 border-t pt-3" style={{ borderColor: T.borderSoft }}>
@@ -252,10 +251,10 @@ export default function ReportsPage() {
                         )}
                         {r.fileUrl && (
                           <a
-                            href={r.fileUrl}
+                            href={`http://localhost:5000/api/reports/${r._id}/file?token=${localStorage.getItem("rc_token") || ""}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 text-xs font-semibold"
+                            className="inline-flex items-center gap-1.5 text-xs font-semibold hover:underline"
                             style={{ color: T.teal }}
                           >
                             <FileText className="w-3.5 h-3.5" /> View original file

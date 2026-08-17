@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { authAPI } from "../../services/api";
-import { Heart, Phone, Lock, Loader2, AlertCircle } from "lucide-react";
+import { Heart, Phone, Lock, Loader2, AlertCircle, ArrowLeft } from "lucide-react";
+import { T } from "../../design/tokens";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -26,59 +27,120 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-blue-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-sm">
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-primary-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-            <Heart className="w-8 h-8 text-white" />
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden" style={{ background: T.bg }}>
+      {/* Background glow overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: `radial-gradient(ellipse 60% 50% at 50% 30%, ${T.tealGlow}, transparent 70%)` }}
+      />
+
+      <div className="w-full max-w-md relative z-10">
+        {/* Header Branding */}
+        <div className="text-center mb-6">
+          <div
+            className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-md"
+            style={{ background: T.teal, color: "#FFFFFF" }}
+          >
+            <Heart className="w-7 h-7 fill-white/20" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">RuralCare AI</h1>
-          <p className="text-gray-500 text-sm mt-1">Multilingual Healthcare for Rural India</p>
+          <h1 className="text-2xl font-bold tracking-tight" style={{ fontFamily: "Syne, sans-serif", color: T.ink }}>
+            RuralCare AI
+          </h1>
+          <p className="text-xs mt-1" style={{ color: T.inkLight }}>
+            Multilingual Healthcare Platform for Rural India
+          </p>
         </div>
 
-        <div className="card shadow-xl">
-          <h2 className="text-lg font-semibold text-gray-900 mb-5">Sign In</h2>
+        {/* Auth Card */}
+        <div
+          className="rounded-3xl p-6 sm:p-8 shadow-sm border"
+          style={{ background: T.surfaceRaised, borderColor: T.border }}
+        >
+          <div className="mb-5">
+            <h2 className="text-lg font-bold" style={{ fontFamily: "Syne, sans-serif", color: T.ink }}>
+              Sign In to Your Account
+            </h2>
+            <p className="text-xs mt-0.5" style={{ color: T.inkMid }}>
+              Enter your registered phone number and password
+            </p>
+          </div>
 
           {error && (
-            <div className="flex items-start gap-2 bg-red-50 border border-red-200 rounded-xl p-3 mb-4">
-              <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-red-700">{error}</p>
+            <div className="flex items-start gap-2.5 rounded-xl p-3 mb-4 text-xs" style={{ background: "#FEF2F2", border: "1px solid #FCA5A5", color: T.danger }}>
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+              <p className="font-medium">{error}</p>
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="label">Phone Number</label>
+              <label className="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style={{ color: T.inkLight }}>
+                Phone Number
+              </label>
               <div className="relative">
-                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input type="tel" className="input pl-10" placeholder="9876543210" value={form.phone}
-                  onChange={e => setForm(f=>({...f, phone:e.target.value}))} required maxLength={10} />
+                <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: T.inkLight }} />
+                <input
+                  type="tel"
+                  className="w-full rounded-xl border pl-10 pr-4 py-2.5 text-sm outline-none transition-colors"
+                  style={{ borderColor: T.border, background: T.surface, color: T.ink }}
+                  placeholder="10-digit mobile number"
+                  value={form.phone}
+                  onChange={e => setForm(f=>({...f, phone:e.target.value}))}
+                  required
+                  maxLength={10}
+                />
               </div>
             </div>
+
             <div>
-              <label className="label">Password</label>
+              <label className="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style={{ color: T.inkLight }}>
+                Password
+              </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input type="password" className="input pl-10" placeholder="Enter password" value={form.password}
-                  onChange={e => setForm(f=>({...f, password:e.target.value}))} required />
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: T.inkLight }} />
+                <input
+                  type="password"
+                  className="w-full rounded-xl border pl-10 pr-4 py-2.5 text-sm outline-none transition-colors"
+                  style={{ borderColor: T.border, background: T.surface, color: T.ink }}
+                  placeholder="Enter password"
+                  value={form.password}
+                  onChange={e => setForm(f=>({...f, password:e.target.value}))}
+                  required
+                />
               </div>
             </div>
-            <button type="submit" disabled={loading} className="btn-primary w-full flex items-center justify-center gap-2 mt-2">
-              {loading ? <><Loader2 className="w-4 h-4 animate-spin" />Signing in...</> : "Sign In"}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-sm font-semibold text-white transition-all duration-300 disabled:opacity-50 mt-2 shadow-sm"
+              style={{ background: T.teal }}
+            >
+              {loading ? (
+                <><Loader2 className="w-4 h-4 animate-spin" /> Signing in…</>
+              ) : (
+                "Sign In"
+              )}
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-500 mt-4">
-            New user?{" "}
-            <Link to="/register" className="text-primary-600 font-medium hover:underline">Register here</Link>
-          </p>
-          <p className="text-center text-sm text-gray-500 mt-2">
-            <Link to="/" className="text-gray-500 hover:text-primary-600 hover:underline">← Back to RuralCare AI</Link>
-          </p>
+          <div className="mt-6 pt-4 border-t text-center space-y-2 text-xs" style={{ borderColor: T.borderSoft }}>
+            <p style={{ color: T.inkMid }}>
+              New to RuralCare AI?{" "}
+              <Link to="/register" className="font-bold hover:underline" style={{ color: T.teal }}>
+                Register here
+              </Link>
+            </p>
+            <p>
+              <Link to="/" className="inline-flex items-center gap-1 font-medium hover:underline" style={{ color: T.inkLight }}>
+                <ArrowLeft className="w-3 h-3" /> Back to RuralCare AI
+              </Link>
+            </p>
+          </div>
         </div>
 
-        <p className="text-center text-xs text-gray-400 mt-6">
-          Emergency? Call <a href="tel:108" className="text-red-500 font-bold">108</a> (Free Ambulance)
+        <p className="text-center text-xs mt-6" style={{ color: T.inkLight }}>
+          Medical emergency? Call <a href="tel:108" className="font-bold" style={{ color: T.danger }}>108</a> (Free Ambulance)
         </p>
       </div>
     </div>

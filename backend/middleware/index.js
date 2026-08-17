@@ -5,9 +5,11 @@ const multer     = require("multer");
 
 const protect = async (req, res, next) => {
   try {
-    const h = req.headers.authorization;
-    if (!h || !h.startsWith("Bearer ")) return res.status(401).json({ success:false, message:"Token missing" });
-    const decoded = jwt.verify(h.split(" ")[1], process.env.JWT_SECRET);
+    let token = req.headers.authorization?.startsWith("Bearer ")
+      ? req.headers.authorization.split(" ")[1]
+      : req.query.token;
+    if (!token) return res.status(401).json({ success:false, message:"Token missing" });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user    = await User.findById(decoded.id).select("-password -otp");
     if (!user || !user.isActive) return res.status(401).json({ success:false, message:"User not found" });
     req.user = user;

@@ -98,5 +98,6 @@ export const heatmapAPI = {
 export const teleconsultAPI = {
   start:            (data)     => api.post("/teleconsult/start", data),
   getMySessions:    ()         => api.get("/teleconsult/my-sessions"),
+  getRoomDetails:   (roomId)   => api.get(`/teleconsult/room/${roomId}`),
   generateSoapNotes:(id, data) => api.post(`/teleconsult/${id}/soap-notes`, data),
 };
