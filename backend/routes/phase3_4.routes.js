@@ -53,47 +53,22 @@ prescriptionRouter.post("/", authorize("doctor","admin"), async (req,res) => {
     const { patientId, diagnosis, medicines, additionalNotes, followUpDate } = req.body;
     const rx = await Prescription.create({ patient:patientId, doctor:req.user._id, diagnosis, medicines, additionalNotes, followUpDate:followUpDate?new Date(followUpDate):null });
     // Notify patient
-    const clientUrl = process.env.CLIENT_URL || "http://localhost:5173";
-    await notifService.createNotification(
-      patientId,
-      "prescription",
-      "💊 New Prescription",
-      `Dr. ${req.user.fullName} has issued a prescription. View on RuralCare website: ${clientUrl}/patient/prescriptions`
-    );
+    await notifService.createNotification(patientId, "prescription", "💊 New Prescription", `Dr. ${req.user.fullName} has issued a prescription. View on RuralCare website.`);
     res.status(201).json({ success:true, data:{ prescription:rx } });
   } catch(e) { res.status(500).json({ success:false, message:e.message }); }
 });
 
 prescriptionRouter.get("/doctor", authorize("doctor","admin"), async (req,res) => {
   try {
-    const rxs = await Prescription.find({ doctor:req.user._id }).populate("patient","fullName phone age gender village district bloodGroup").sort({createdAt:-1}).limit(50);
+    const rxs = await Prescription.find({ doctor:req.user._id }).populate("patient","fullName phone").sort({createdAt:-1}).limit(50);
     res.json({ success:true, data:{ prescriptions:rxs } });
   } catch(e) { res.status(500).json({ success:false, message:e.message }); }
 });
 
 prescriptionRouter.get("/patient", async (req,res) => {
   try {
-    const rxs = await Prescription.find({ patient:req.user._id }).populate("doctor","fullName phone district village").sort({createdAt:-1});
+    const rxs = await Prescription.find({ patient:req.user._id }).populate("doctor","fullName").sort({createdAt:-1});
     res.json({ success:true, data:{ prescriptions:rxs } });
-  } catch(e) { res.status(500).json({ success:false, message:e.message }); }
-});
-
-prescriptionRouter.get("/:id", async (req,res) => {
-  try {
-    const rx = await Prescription.findById(req.params.id)
-      .populate("doctor", "fullName phone district village")
-      .populate("patient", "fullName phone age gender bloodGroup village district");
-    if (!rx) return res.status(404).json({ success:false, message:"Prescription not found" });
-
-    // Strict authorization check: must be the patient or doctor associated with this prescription (or admin)
-    if (req.user.role === "patient" && rx.patient._id.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ success:false, message:"Unauthorized access to prescription" });
-    }
-    if (req.user.role === "doctor" && rx.doctor._id.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ success:false, message:"Unauthorized access to prescription" });
-    }
-
-    res.json({ success:true, data:{ prescription:rx } });
   } catch(e) { res.status(500).json({ success:false, message:e.message }); }
 });
 

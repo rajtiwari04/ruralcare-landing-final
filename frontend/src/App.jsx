@@ -18,7 +18,6 @@ import SymptomsPage from "./pages/patient/SymptomsPage";
 import ReportsPage from "./pages/patient/ReportsPage";
 import HealthHistoryPage from "./pages/patient/HealthHistoryPage";
 import AppointmentsPage from "./pages/patient/AppointmentsPage";
-import PrescriptionsPage from "./pages/patient/PrescriptionsPage";
 import ProfilePage from "./pages/patient/ProfilePage";
 
 // Patient (Phase 3 & 4)
@@ -116,10 +115,6 @@ export default function App() {
           <Route
             path="appointments"
             element={<AppointmentsPage />}
-          />
-          <Route
-            path="prescriptions"
-            element={<PrescriptionsPage />}
           />
           <Route path="profile" element={<ProfilePage />} />
 

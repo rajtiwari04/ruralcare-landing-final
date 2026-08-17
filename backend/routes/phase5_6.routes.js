@@ -10,7 +10,7 @@ const analyticsRouter = express.Router();
 analyticsRouter.post("/track",                   protect, analyticsCtrl.trackEvent);
 analyticsRouter.get ("/insights",                protect, analyticsCtrl.getMyInsights);
 analyticsRouter.put ("/insights/:id/read",       protect, analyticsCtrl.markInsightRead);
-analyticsRouter.post("/insights/generate",            protect, analyticsCtrl.generateInsights);
+analyticsRouter.post("/insights/generate",       protect, authorize("doctor","admin"), analyticsCtrl.generateInsights);
 analyticsRouter.post("/insights/generate/:patientId", protect, authorize("doctor","admin"), analyticsCtrl.generateInsights);
 analyticsRouter.post("/feedback",                protect, analyticsCtrl.submitFeedback);
 analyticsRouter.get ("/feedback/stats",          protect, authorize("admin"), analyticsCtrl.getFeedbackStats);
