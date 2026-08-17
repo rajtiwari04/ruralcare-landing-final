@@ -168,10 +168,12 @@ export default function ReportsPage() {
             const open = expanded === r._id;
             return (
               <Surface key={r._id} className="overflow-hidden">
-                <button
-                  type="button"
-                  className="w-full flex items-center gap-3 p-4 text-left"
+                <div
+                  role="button"
+                  tabIndex={0}
+                  className="w-full flex items-center gap-3 p-4 text-left cursor-pointer outline-none"
                   onClick={() => setExpanded(open ? null : r._id)}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setExpanded(open ? null : r._id); } }}
                 >
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
@@ -192,13 +194,13 @@ export default function ReportsPage() {
                     type="button"
                     aria-label="Delete report"
                     onClick={(e) => { e.stopPropagation(); del(r._id); }}
-                    className="p-1.5 rounded-lg"
+                    className="p-1.5 rounded-lg hover:bg-black/5 transition-colors"
                     style={{ color: T.inkLight }}
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                   {open ? <ChevronUp className="w-4 h-4" style={{ color: T.inkLight }} /> : <ChevronDown className="w-4 h-4" style={{ color: T.inkLight }} />}
-                </button>
+                </div>
 
                 {open && (
                   <div className="px-4 pb-4 space-y-3 border-t pt-3" style={{ borderColor: T.borderSoft }}>
@@ -252,11 +254,15 @@ export default function ReportsPage() {
                         )}
                         {r.fileUrl && (
                           <a
-                            href={r.fileUrl}
+                            href={
+                              r.fileType === "pdf" && r.fileUrl.includes("cloudinary.com") && !r.fileUrl.endsWith(".pdf")
+                                ? `${r.fileUrl}.pdf`
+                                : r.fileUrl
+                            }
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 text-xs font-semibold"
-                            style={{ color: T.teal }}
+                            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors hover:bg-teal-50"
+                            style={{ borderColor: T.teal, color: T.teal }}
                           >
                             <FileText className="w-3.5 h-3.5" /> View original file
                           </a>

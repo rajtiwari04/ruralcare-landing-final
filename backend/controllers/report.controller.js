@@ -64,6 +64,21 @@ const getReport = async (req, res) => {
   } catch(e) { res.status(500).json({ success:false, message:e.message }); }
 };
 
+const getReportFile = async (req, res) => {
+  try {
+    const r = await MedicalReport.findOne({ _id: req.params.id, patient: req.user._id });
+    if (!r || !r.fileUrl) return res.status(404).json({ success: false, message: "Report file not found" });
+    
+    let targetUrl = r.fileUrl;
+    if (r.fileType === "pdf" && targetUrl.includes("res.cloudinary.com") && !targetUrl.endsWith(".pdf")) {
+      targetUrl = targetUrl + ".pdf";
+    }
+    return res.redirect(targetUrl);
+  } catch (e) {
+    res.status(500).json({ success: false, message: e.message });
+  }
+};
+
 const deleteReport = async (req, res) => {
   try {
     await MedicalReport.findOneAndDelete({ _id:req.params.id, patient:req.user._id });
@@ -71,4 +86,4 @@ const deleteReport = async (req, res) => {
   } catch(e) { res.status(500).json({ success:false, message:e.message }); }
 };
 
-module.exports = { uploadReport, getMyReports, getReport, deleteReport };
+module.exports = { uploadReport, getMyReports, getReport, getReportFile, deleteReport };

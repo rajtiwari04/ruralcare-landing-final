@@ -423,16 +423,16 @@ export default function PatientDashboard() {
           <div>
             <SectionLabel>Quick actions</SectionLabel>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <QuickAction to="/patient/prescriptions" icon={Pill} label="Prescriptions" desc="Doctor Rxs & medicines" />
               <QuickAction to="/patient/chat" icon={MessageCircle} label="Ask AI" desc="Symptom help & guidance" />
               <QuickAction to="/patient/reports" icon={FileText} label="Upload report" desc="OCR + explanation" />
               <QuickAction to="/patient/appointments" icon={Calendar} label="Book appointment" desc="In-person or video" />
-              <QuickAction to="/patient/history" icon={Heart} label="View timeline" desc="Your care journey" />
             </div>
           </div>
 
           {/* Compact stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <MetricTile label="Reminders" value={stats.activeReminders ?? 0} icon={Pill} />
+            <MetricTile label="Prescriptions" value={stats.prescriptionsCount ?? "View"} icon={Pill} to="/patient/prescriptions" />
             <MetricTile label="Upcoming" value={stats.upcomingAppointments ?? 0} icon={Calendar} to="/patient/appointments" />
             <MetricTile label="Reports" value={stats.recentReports ?? 0} icon={FileText} to="/patient/reports" />
             <MetricTile label="Records" value={stats.healthRecords ?? 0} icon={Activity} to="/patient/history" />

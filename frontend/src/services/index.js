@@ -63,6 +63,7 @@ export const prescriptionAPI = {
   create:        (data)       => api.post("/prescriptions", data),
   getDoctorList: ()           => api.get("/prescriptions/doctor"),
   getPatientList:()           => api.get("/prescriptions/patient"),
+  getById:       (id)         => api.get(`/prescriptions/${id}`),
 };
 
 export const labAPI = {
